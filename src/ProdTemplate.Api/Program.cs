@@ -25,7 +25,7 @@ services
             Password = builder.Configuration["POSTGRES_PASSWORD"]
         }.ConnectionString)
     //.AddOTel()
-    .AddLogger(builder.Configuration)
+    .AddLogger(builder)
     .AddOpenApi()
     .AddExceptionFilter()
     .AddActorSystem();

@@ -7,7 +7,9 @@ using OpenTelemetry.Trace;
 using ProdTemplate.Api.Exceptions;
 using ProdTemplate.Api.Services;
 using Serilog;
+using Serilog.Events;
 using Serilog.Sinks.Grafana.Loki;
+using StackExchange.Redis;
 
 namespace ProdTemplate.Api;
 
@@ -103,7 +105,7 @@ public static class AppConfigureServicesExtensions
             return services;
         }
 
-        public IServiceCollection AddLogger(ConfigurationManager configuration)
+        public IServiceCollection AddLogger(WebApplicationBuilder builder)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
@@ -117,9 +119,13 @@ public static class AppConfigureServicesExtensions
                 .CreateLogger();
 
             var logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
+                .ReadFrom.Configuration(builder.Configuration)
                 .CreateLogger();
-            services.AddSingleton(logger);
+            builder.Services.AddSingleton(logger);
+
+            builder.Logging.AddSerilog(logger).AddOpenTelemetry();
+
+            builder.Host.UseSerilog();
 
             return services;
         }
