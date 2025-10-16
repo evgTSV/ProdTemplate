@@ -25,23 +25,21 @@ services
             Password = builder.Configuration["POSTGRES_PASSWORD"]
         }.ConnectionString)
     //.AddOTel()
-    //.AddLogger(builder.Configuration)
+    .AddLogger(builder.Configuration)
     .AddOpenApi()
-    .AddExceptionFilter();
+    .AddExceptionFilter()
+    .AddActorSystem();
 
 services.AddSingleton<IJwtService, JwtService>();
 services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.MapPrometheusScrapingEndpoint();
-// app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging();
 
 app.MapControllers();
 

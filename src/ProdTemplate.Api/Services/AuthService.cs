@@ -15,9 +15,12 @@ public class AuthService(
     
     public async Task<AuthResponse> SignIn(SignInRequest request)
     {
-        var user = await context.Users.SingleAsync(u => 
+        var user = await context.Users.SingleOrDefaultAsync(u => 
             u.Email == request.UsernameOrEmail || 
             u.Username == request.UsernameOrEmail);
+
+        if (user == null)
+            throw new UnauthorizedException("Invalid username or password");
 
         var result = _passwordHasher.VerifyHashedPassword(user.Email, user.Password, request.Password);
         return result == PasswordVerificationResult.Failed 

@@ -6,12 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Library.fs"/>
+        <Compile Include="Env.fs" />
+        <Compile Include="PingActor.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Akka" Version="1.5.53" />
       <PackageReference Include="Akka.FSharp" Version="1.5.53" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0-rc.2.25502.107" />
     </ItemGroup>
 
 </Project>

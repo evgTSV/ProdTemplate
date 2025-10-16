@@ -7,7 +7,7 @@ namespace ProdTemplate.Api.Controllers;
 
 [Controller]
 [Route("auth")]
-public class AuthController(IAuthService authService)
+public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("sign-up")]
     public Task<AuthResponse> SignUp([FromBody] SignUpRequest request) => authService.SignUp(request);

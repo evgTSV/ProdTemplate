@@ -26,5 +26,29 @@
       timeout: 10s
       retries: 5
       
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "8052:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+      
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "8074:3100"
+    env_file:
+      - .env
+    volumes:
+      - ./loki.yml:/etc/loki/loki.yml
+      - loki_data:/etc/loki
+      
 volumes:
   postgres_data:
+  loki_data:
+  grafana_data:

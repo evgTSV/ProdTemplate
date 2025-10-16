@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Akka.Actor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
@@ -126,6 +127,13 @@ public static class AppConfigureServicesExtensions
         public IServiceCollection AddExceptionFilter()
         {
             services.AddControllers(o => o.Filters.Add<ExceptionFilter>());
+            return services;
+        }
+
+        public IServiceCollection AddActorSystem()
+        {
+            services.AddSingleton(_ => ActorSystem.Create("ProdTemplateActors"));
+            services.AddSingleton<ProdTemplateActors>();
             return services;
         }
     }
